@@ -23,6 +23,11 @@ def main():
     if os.path.exists(pyinstaller_path+"/mm"):
         shutil.rmtree(pyinstaller_path+"/mm")
 
+    if not build_settings :
+        print "****ERROR****"
+        print "No build_settings.json file could be parsed. Check that the file exists in the build directory."
+        sys.exit(1)
+
     #run pyinstaller on mm.py
     os.chdir(pyinstaller_path)
     pyinstaller_command = "{0} pyinstaller.py {1} --onedir {2}".format(

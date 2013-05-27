@@ -8,10 +8,10 @@ import pipes
 sys.path.append('../')
 import lib.mm_util as mm_util
 
-mavensmate_path     = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-pyinstaller_path    = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))+"/tools/pyinstaller-dev"
-mm_path             = os.path.dirname(os.path.dirname(__file__))
-mm_build_path       = os.path.dirname(__file__)
+mavensmate_path     = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
+pyinstaller_path    = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__))))) + "/tools/pyinstaller-dev"
+mm_path             = os.path.dirname(os.path.abspath(__file__))
+mm_build_path       = os.path.dirname(os.path.abspath(__file__))
 build_settings      = mm_util.parse_json_from_file('build_settings.json')
 
 def main():
@@ -39,6 +39,14 @@ def main():
         print "****ERROR****"
         for line in p.stderr.readlines():
             print line
+
+    #create the dist directory under mm
+    if not os.path.exists("{0}/mm/dist".format(pyinstaller_path)):
+        os.mkdir("{0}/mm/dist".format(pyinstaller_path))
+
+    #create the bin directory under mm/build
+    if not os.path.exists("{0}/bin".format(mm_path)):
+        os.mkdir("{0}/bin".format(mm_path))
 
     #copy frozen mm to mm dist path
     shutil.copytree("{0}/mm/dist".format(pyinstaller_path), "{0}/dist".format(mm_path))
